@@ -66,13 +66,39 @@ export default function Contact() {
             Open to opportunities in AI engineering, robotics, and full-stack
             development. Reach out — I&apos;d love to hear about your project.
           </p>
-
-          <a
-            href="mailto:syedasumayya763@gmail.com"
-            className="inline-block mt-10 px-9 py-4 border border-gold text-gold text-sm tracking-[0.1em] uppercase hover:bg-gold hover:text-base transition-all duration-300"
-          >
-            Send an Email
-          </a>
+          <form
+  action="https://formspree.io/f/mzdljejn"
+  method="POST"
+  className="mt-10 w-full max-w-lg mx-auto flex flex-col gap-4"
+>
+  <input
+    type="text"
+    name="name"
+    placeholder="Your Name"
+    required
+    className="bg-surface border border-gold/20 text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none focus:border-gold/60 transition-colors"
+  />
+  <input
+    type="email"
+    name="email"
+    placeholder="Your Email"
+    required
+    className="bg-surface border border-gold/20 text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none focus:border-gold/60 transition-colors"
+  />
+  <textarea
+    name="message"
+    placeholder="Your Message"
+    rows={5}
+    required
+    className="bg-surface border border-gold/20 text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none focus:border-gold/60 transition-colors resize-none"
+  />
+  <button
+    type="submit"
+    className="px-9 py-4 border border-gold text-gold text-sm tracking-[0.1em] uppercase hover:bg-gold hover:text-base transition-all duration-300"
+  >
+    Send Message
+  </button>
+</form>
 
           <div className="mt-14 flex flex-wrap justify-center gap-x-10 gap-y-4 text-sm text-ivory-dim">
             <span className="inline-flex items-center gap-2">
