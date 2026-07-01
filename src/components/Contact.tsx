@@ -77,7 +77,7 @@ export default function Contact() {
           <div className="mt-14 flex flex-wrap justify-center gap-x-10 gap-y-4 text-sm text-ivory-dim">
             <span className="inline-flex items-center gap-2">
               <Mail size={15} className="text-gold" />
-              syedasumayya763@gmail.com
+              syedasumayya764@gmail.com
             </span>
             <span className="inline-flex items-center gap-2">
               <Phone size={15} className="text-gold" />
