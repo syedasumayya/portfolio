@@ -164,7 +164,7 @@ export default function Hero() {
             View Work
           </a>
           <a
-            href="/Resume.pdf"
+            href="/resume1.pdf"
             download
             className="px-7 py-3 text-ivory-dim text-sm tracking-[0.1em] uppercase hover:text-gold transition-colors duration-300 border-b border-transparent hover:border-gold"
           >
