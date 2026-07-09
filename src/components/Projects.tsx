@@ -30,6 +30,14 @@ const projects = [
     tags: ["ROS 2", "Hardware Design", "Embedded Systems"],
     image: "/tera-x.png",
   },
+   {
+    title: "Skin Cancer Detection System",
+    role: "Full Stack Developer & AI Engineer",
+    description:
+      "Full-stack AI-powered skin cancer detection web application. Trained a CNN deep learning model to classify skin lesions from uploaded images. Built a FastAPI backend with REST API endpoints, SQLite database for patient records, and a responsive Next.js frontend for image upload and real-time diagnosis results.",
+    tags: ["ROS 2", "Next.js", "FastAPI","CNN","python","SQLite","AI integration"],
+    image: "/skin.png",
+  },
   {
     title: "Arbotrix — Company & Portfolio Website",
     role: "Full Stack Developer",
