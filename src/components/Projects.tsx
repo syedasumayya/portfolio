@@ -36,7 +36,7 @@ const projects = [
     description:
       "Full-stack AI-powered skin cancer detection web application. Trained a CNN deep learning model to classify skin lesions from uploaded images. Built a FastAPI backend with REST API endpoints, SQLite database for patient records, and a responsive Next.js frontend for image upload and real-time diagnosis results.",
     tags: ["ROS 2", "Next.js", "FastAPI","CNN","python","SQLite","AI integration"],
-    image: "/skin.png",
+    image: "/skincancer.png",
   },
   {
     title: "Arbotrix — Company & Portfolio Website",
