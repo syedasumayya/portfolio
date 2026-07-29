@@ -61,7 +61,7 @@ Deployed on [Vercel](https://vercel.com). Every push to `master` triggers an aut
 
 ## Contact
 
-- Email: syedasumayya763@gmail.com
+- Email: syedasumayya764@gmail.com
 - LinkedIn: [linkedin.com/in/sumayya-zahid11](https://www.linkedin.com/in/sumayya-zahid11)
 - GitHub: [github.com/syedasumayya](https://github.com/syedasumayya)
 - Blog: [Blogger Profile](https://www.blogger.com/profile/16214197526729610194)
