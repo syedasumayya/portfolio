@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import VisionBackground from "@/components/VisionBackground";
+import IntroLoader from "@/components/IntroLoader";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
 });
 
 const inter = Inter({
@@ -23,8 +26,7 @@ const jbmono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Syeda Sumayya Zahid — Software Engineer & AI/Robotics Specialist",
-  description:
-    "Portfolio of Syeda Sumayya Zahid — Software Engineer specializing in AI, robotics (ROS 2), and full-stack web development with Next.js, Node.js, and Tailwind CSS.",
+  description: "Portfolio of Syeda Sumayya Zahid — Software Engineer specializing in AI, robotics (ROS 2), and full-stack web development with Next.js, Node.js, and Tailwind CSS.",
 };
 
 export default function RootLayout({
@@ -34,10 +36,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${cormorant.variable} ${inter.variable} ${jbmono.variable} antialiased bg-base text-ivory`}
-      >
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${jbmono.variable} antialiased bg-base text-ivory`}>
+        <IntroLoader />
+        <VisionBackground />
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

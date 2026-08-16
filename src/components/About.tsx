@@ -1,82 +1,8 @@
-// "use client";
-// import Image from "next/image";
-// import { motion } from "framer-motion";
-// import SectionHeading from "./SectionHeading";
-
-// const focus = [
-//   "Robotics — ROS 2 & Autonomous Systems",
-//   "Machine Learning & Deep Learning",
-//   "Computer Vision",
-//   "Full-Stack Web Development",
-//   "Software Quality Engineer",
-// ];
-
-// export default function About() {
-//   return (
-//     <section id="about" className="py-28 md:py-36 border-t border-gold/10">
-//       <div className="max-w-6xl mx-auto px-6 md:px-10">
-//         <SectionHeading eyebrow="01 — Profile" title="About" />
-
-//         <div className="grid md:grid-cols-5 gap-12">
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true, margin: "-80px" }}
-//             transition={{ duration: 0.7 }}
-//             className="md:col-span-3"
-//           >
-//             <p className="text-lg md:text-xl text-ivory-dim leading-relaxed font-light">
-//               I&apos;m a results-driven Software Engineer with comprehensive
-//               experience spanning full-stack web development, intelligent
-//               automation, and distributed robotic software systems. My work
-//               sits at the intersection of artificial intelligence and
-//               physical systems — training neural networks for real-time
-//               decision-making, then engineering the ROS&nbsp;2 architecture
-//               that lets a robot act on them.
-//             </p>
-//             <p className="mt-6 text-lg md:text-xl text-ivory-dim leading-relaxed font-light">
-//               I bring the same precision to the web: architecting scalable
-//               applications and responsive interfaces with Next.js, Node.js,
-//               and Tailwind CSS, grounded in Agile practice and the full
-//               software development lifecycle.
-//             </p>
-
-//             <div className="mt-10 grid grid-cols-2 gap-4">
-//               {focus.map((f) => (
-//                 <div
-//                   key={f}
-//                   className="flex items-start gap-3 text-sm text-ivory-dim"
-//                 >
-//                   <span className="mt-2 w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
-//                   {f}
-//                 </div>
-//               ))}
-//             </div>
-//           </motion.div>
-//          <motion.div
-//             initial={{ opacity: 0, x: 20 }}
-//             whileInView={{ opacity: 1, x: 0 }}
-//             viewport={{ once: true, margin: "-80px" }}
-//             transition={{ duration: 0.7, delay: 0.15 }}
-//             className="md:col-span-2"
-//           >
-//             <div className="relative w-full h-full min-h-[480px] border border-gold/15 overflow-hidden">
-//               <Image
-//                 src="/profile.jpeg"
-//                 alt="Syeda Sumayya Zahid"
-//                 fill
-//                 className="object-cover"
-//               />
-//             </div>
-//           </motion.div>
-//         </div>
-//       </div>
-//     </section>
-//   )
-// }
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { Cpu, Brain, Sparkles, Eye, Code2, ShieldCheck } from "lucide-react";
 import SectionHeading from "./SectionHeading";
 
 function GithubIcon({ size = 20 }: { size?: number }) {
@@ -105,20 +31,29 @@ function BookOpenIcon({ size = 20 }: { size?: number }) {
 }
 
 const links = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/sumayya-zahid11", icon: LinkedinIcon },
-  { label: "GitHub", href: "https://github.com/syedasumayya", icon: GithubIcon },
-  { label: "Blog", href: "https://www.blogger.com/profile/16214197526729610194", icon: BookOpenIcon },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/sumayya-zahid11", icon: LinkedinIcon, color: "#60a5fa" },
+  { label: "GitHub", href: "https://github.com/syedasumayya", icon: GithubIcon, color: "#a78bfa" },
+  { label: "Blog", href: "https://www.blogger.com/profile/16214197526729610194", icon: BookOpenIcon, color: "#34d399" },
 ];
 
 const focus = [
-  "Robotics — ROS 2 & Autonomous Systems",
-  "Machine Learning & Deep Learning",
-  "Computer Vision",
-  "Full-Stack Web Development",
-  "Software Quality Engineer",
+  { label: "Robotics — ROS 2", icon: Cpu, color: "#fb923c", colorTo: "#fbbf24" },
+  { label: "Machine Learning & DL", icon: Brain, color: "#a78bfa", colorTo: "#67e8f9" },
+  { label: "AI Research & LLMs", icon: Sparkles, color: "#f472b6", colorTo: "#c084fc" },
+  { label: "Computer Vision", icon: Eye, color: "#22d3ee", colorTo: "#38bdf8" },
+  { label: "Full-Stack Web Dev", icon: Code2, color: "#60a5fa", colorTo: "#818cf8" },
+  { label: "Software Quality Eng.", icon: ShieldCheck, color: "#fb7185", colorTo: "#f43f5e" },
+];
+
+const stats = [
+  { value: "3+", label: "Professional Roles" },
+  { value: "11+", label: "Projects Shipped" },
+  { value: "2026", label: "BS Software Eng." },
 ];
 
 export default function About() {
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
     <section id="about" className="py-28 md:py-36 border-t border-gold/10">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
@@ -133,39 +68,75 @@ export default function About() {
             className="md:col-span-3"
           >
             <p className="text-lg md:text-xl text-ivory-dim leading-relaxed font-light">
-              I&apos;m a results-driven Software Engineer with comprehensive
-              experience spanning full-stack web development, intelligent
-              automation, and distributed robotic software systems. My work
-              sits at the intersection of artificial intelligence and
-              physical systems — training neural networks for real-time
-              decision-making, then engineering the ROS&nbsp;2 architecture
-              that lets a robot act on them.
+              I sit at the intersection of AI and physical systems — training
+              neural networks for real-time decision-making, then engineering
+              the ROS&nbsp;2 architecture that lets a robot act on them.
+              Alongside that, I build with large language models, architecting
+              LLM-powered features like AI-driven content generation with the
+              Claude&nbsp;API on secure, production-grade backends.
             </p>
-            <p className="mt-6 text-lg md:text-xl text-ivory-dim leading-relaxed font-light">
-              I bring the same precision to the web: architecting scalable
-              applications and responsive interfaces with Next.js, Node.js,
-              and Tailwind CSS, grounded in Agile practice and the full
-              software development lifecycle.
+            <p className="mt-5 text-lg md:text-xl text-ivory-dim leading-relaxed font-light">
+              I bring the same precision to the web — scalable applications
+              and responsive interfaces with Next.js and Node.js, grounded in
+              Agile practice and the full software development lifecycle.
             </p>
 
-            <div className="mt-10 grid grid-cols-2 gap-4">
-              {focus.map((f) => (
-                <div key={f} className="flex items-start gap-3 text-sm text-ivory-dim">
-                  <span className="mt-2 w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
-                  {f}
+            <div className="mt-9 flex flex-wrap gap-8">
+              {stats.map((s) => (
+                <div key={s.label}>
+                  <p
+                    className="font-display text-3xl"
+                    style={{
+                      backgroundImage: "linear-gradient(90deg, #a78bfa, #22d3ee)",
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      color: "transparent",
+                    }}
+                  >
+                    {s.value}
+                  </p>
+                  <p className="text-xs text-ivory-dim/60 mt-1">{s.label}</p>
                 </div>
               ))}
             </div>
 
-            {/* Social icon links — under the focus list */}
-            <div className="mt-12 flex gap-10">
+            <div className="mt-9 grid grid-cols-2 gap-3">
+              {focus.map((f, i) => {
+                const Icon = f.icon;
+                const isHovered = hovered === i;
+                return (
+                  <div
+                    key={f.label}
+                    onMouseEnter={() => setHovered(i)}
+                    onMouseLeave={() => setHovered(null)}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all duration-300"
+                    style={{
+                      borderColor: isHovered ? `${f.color}55` : "rgba(139,124,255,0.08)",
+                      backgroundColor: isHovered ? `${f.color}0d` : "transparent",
+                    }}
+                  >
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: `${f.color}1a`, border: `1px solid ${f.color}40` }}
+                    >
+                      <Icon size={15} style={{ color: f.color }} />
+                    </div>
+                    <span className="text-sm text-ivory-dim">{f.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-10 flex gap-8">
               {links.map((l) => (
                 <a
                   key={l.label}
                   href={l.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-2 text-ivory-dim hover:text-gold transition-colors duration-300 group"
+                  className="flex flex-col items-center gap-2 text-ivory-dim transition-colors duration-300 group"
+                  onMouseEnter={(e) => (e.currentTarget.style.color = l.color)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
                 >
                   <l.icon size={20} />
                   <span className="text-[11px] font-mono tracking-wide uppercase opacity-70 group-hover:opacity-100">
@@ -183,13 +154,28 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="md:col-span-2"
           >
-            <div className="relative w-full h-full min-h-[480px] border border-gold/15 overflow-hidden">
+            <div className="scan-frame relative w-full h-full min-h-[480px] glass-panel overflow-hidden">
+              <span className="corner-tl" />
+              <span className="corner-br" />
               <Image
                 src="/profile.jpeg"
                 alt="Syeda Sumayya Zahid"
                 fill
+                sizes="(min-width: 768px) 40vw, 100vw"
                 className="object-cover"
               />
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="absolute bottom-4 left-4 right-4 flex items-center gap-2 bg-base/70 backdrop-blur-md border border-gold/15 rounded-full px-4 py-2"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse shrink-0" />
+                <span className="font-mono text-[11px] tracking-wide text-ivory-dim">
+                  Open to opportunities — Islamabad, PK
+                </span>
+              </motion.div>
             </div>
           </motion.div>
         </div>
