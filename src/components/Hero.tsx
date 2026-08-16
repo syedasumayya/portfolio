@@ -225,7 +225,7 @@ export default function Hero() {
               View Work
             </a>
             <a
-              href="/resume1.pdf"
+              href="/resume.pdf"
               download
               className="px-6 py-3 border text-sm tracking-[0.1em] uppercase transition-all duration-300"
               style={{ borderColor: `${PALETTE[2].color}60`, color: PALETTE[2].color }}

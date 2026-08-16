@@ -48,7 +48,7 @@ const focus = [
 const stats = [
   { value: "3+", label: "Professional Roles" },
   { value: "11+", label: "Projects Shipped" },
-  { value: "2026", label: "BS Software Eng." },
+  { value: "2+", label: "Years of Experience" },
 ];
 
 export default function About() {
