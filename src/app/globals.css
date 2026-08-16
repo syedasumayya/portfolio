@@ -1,14 +1,15 @@
 @import "tailwindcss";
+
 :root {
-  --color-base: #0b1320;
-  --color-surface: #121c2e;
-  --color-surface-2: #182338;
-  --color-ivory: #eef2f7;
-  --color-ivory-dim: #aab8cc;
-  --color-gold: #d4af6a;
-  --color-gold-bright: #f0c987;
-  --color-bronze: #8b7355;
-  --color-line: rgba(201, 163, 87, 0.18);
+  --color-base: #0a0c12;
+  --color-surface: #12141d;
+  --color-surface-2: #191c28;
+  --color-ivory: #f2f3f9;
+  --color-ivory-dim: #9ea2be;
+  --color-gold: #8b7cff;        /* primary accent — electric violet */
+  --color-gold-bright: #a79bff;
+  --color-bronze: #ffb454;      /* secondary accent — signal amber */
+  --color-line: rgba(139, 124, 255, 0.16);
 }
 
 @theme inline {
@@ -20,51 +21,67 @@
   --color-gold: var(--color-gold);
   --color-gold-bright: var(--color-gold-bright);
   --color-bronze: var(--color-bronze);
-  --font-display: var(--font-cormorant), serif;
+  --font-display: var(--font-space-grotesk), sans-serif;
   --font-sans: var(--font-inter), sans-serif;
   --font-mono: var(--font-jbmono), monospace;
 }
 
-* {
-  scroll-behavior: smooth;
+* { scroll-behavior: smooth; }
+body { background: var(--color-base); color: var(--color-ivory); font-family: var(--font-sans); }
+::selection { background: var(--color-gold); color: var(--color-base); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-base); }
+::-webkit-scrollbar-thumb { background: var(--color-bronze); border-radius: 4px; }
+.text-balance { text-wrap: balance; }
+
+/* Glass panel utility — used for cards across the site */
+.glass-panel {
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--color-line);
 }
 
-body {
-  background: var(--color-base);
-  color: var(--color-ivory);
-  font-family: var(--font-sans);
+/* Signature CV-bounding-box hover effect for cards */
+.scan-frame { position: relative; }
+.scan-frame::before, .scan-frame::after,
+.scan-frame > .corner-tl, .scan-frame > .corner-br {
+  content: ""; position: absolute; width: 16px; height: 16px; opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none;
 }
-
-::selection {
-  background: var(--color-gold);
-  color: var(--color-base);
+.scan-frame::before {
+  top: -1px; left: -1px;
+  border-top: 2px solid var(--color-gold-bright);
+  border-left: 2px solid var(--color-gold-bright);
+  transform: translate(6px, 6px);
 }
-
-::-webkit-scrollbar {
-  width: 8px;
+.scan-frame::after {
+  bottom: -1px; right: -1px;
+  border-bottom: 2px solid var(--color-bronze);
+  border-right: 2px solid var(--color-bronze);
+  transform: translate(-6px, -6px);
 }
-::-webkit-scrollbar-track {
-  background: var(--color-base);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-bronze);
-  border-radius: 4px;
-}
-
-.text-balance {
-  text-wrap: balance;
+.scan-frame:hover::before, .scan-frame:hover::after {
+  opacity: 1; transform: translate(0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+:focus-visible { outline: 1.5px solid var(--color-gold-bright); outline-offset: 3px; }
+/* Animated grid-mesh backdrop — moving "connected boxes" grid, panning slowly */
+.grid-mesh {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: gridPan 30s linear infinite;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 90%);
 }
 
-:focus-visible {
-  outline: 1.5px solid var(--color-gold);
-  outline-offset: 3px;
+@keyframes gridPan {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 56px 56px, 56px 56px; }
 }
