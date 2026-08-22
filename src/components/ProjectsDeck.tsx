@@ -174,6 +174,30 @@ export default function ProjectsDeck() {
       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-ivory-dim/30 text-center mt-6">
         Click the card, or use the arrows, to move through the archive
       </p>
+
+      <div className="flex justify-center mt-12">
+        <a
+          href="https://github.com/syedasumayya"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2.5 font-mono text-xs tracking-[0.15em] uppercase text-ivory border border-gold/20 rounded-full px-7 py-3.5 transition-all duration-300 hover:border-[#a78bfa]/60 hover:shadow-[0_0_24px_-6px_rgba(167,139,250,0.6)] hover:bg-[#a78bfa]/10 group"
+        >
+          <GithubMark size={16} />
+          See More Projects on GitHub
+          <ArrowUpRight
+            size={14}
+            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
+        </a>
+      </div>
     </div>
+  );
+}
+
+function GithubMark({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2C6.48 2 2 6.58 2 12.21c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.48 0-.24-.01-.88-.01-1.72-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.43.2 2.49.1 2.75.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.59.69.48A10.02 10.02 0 0 0 22 12.21C22 6.58 17.52 2 12 2z" />
+    </svg>
   );
 }

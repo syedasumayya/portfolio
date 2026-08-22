@@ -1,157 +1,307 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { ORB_ACTIVATE_EVENT } from "./HeroConstellation";
 
-const SESSION_KEY = "intro-seen";
-const RADIUS = 92;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+// same accent palette used across Skills/Projects/Hero
+const PALETTE = [
+  { color: "#a78bfa", colorTo: "#67e8f9" },
+  { color: "#f472b6", colorTo: "#c084fc" },
+  { color: "#60a5fa", colorTo: "#818cf8" },
+  { color: "#34d399", colorTo: "#22d3ee" },
+];
 
-function alreadySeen() {
-  if (typeof window === "undefined") return true;
-  return window.sessionStorage.getItem(SESSION_KEY) === "1";
-}
+const SCAN_NODES: [number, number][] = [
+  [320, 480],
+  [500, 420],
+  [700, 340],
+  [950, 180],
+];
 
-export default function IntroLoader() {
-  const [seenOnMount] = useState(alreadySeen);
-  const [visible, setVisible] = useState(!seenOnMount);
-  const [progress, setProgress] = useState(0);
-  const [done, setDone] = useState(seenOnMount);
+type Node = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  r: number;
+  baseR: number;
+  twinklePhase: number;
+};
+
+type Pulse = {
+  from: number;
+  to: number;
+  t: number;
+  speed: number;
+};
+
+export default function VisionBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const boostRef = useRef(0);
 
   useEffect(() => {
-    if (seenOnMount) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    let raf: number;
-    const start = performance.now();
-    const DURATION = 2200;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    const tick = (t: number) => {
-      const elapsed = t - start;
-      const pct = Math.min(100, Math.round((elapsed / DURATION) * 100));
-      setProgress(pct);
-      if (pct < 100) {
-        raf = requestAnimationFrame(tick);
-      } else {
-        setTimeout(finish, 300);
+    const NODE_COUNT = Math.min(34, Math.floor((width * height) / 46000));
+    const MAX_DIST = 120;
+
+    const nodes: Node[] = Array.from({ length: NODE_COUNT }, () => {
+      const baseR = 0.8 + Math.random() * 2.0;
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.28,
+        vy: (Math.random() - 0.5) * 0.28,
+        r: baseR,
+        baseR,
+        twinklePhase: Math.random() * Math.PI * 2,
+      };
+    });
+
+    const pulses: Pulse[] = [];
+
+    const mouse = { x: -9999, y: -9999, active: false };
+    const spotlight = { x: -9999, y: -9999 };
+
+    let animationId: number;
+    let frame = 0;
+
+    function draw() {
+      if (!ctx) return;
+      frame++;
+      ctx.clearRect(0, 0, width, height);
+
+      const boost = boostRef.current;
+      if (boost > 0) boostRef.current = Math.max(0, boost - 0.006);
+      const speedMul = 1 + boost * 2;
+      const glowMul = 1 + boost * 1.6;
+
+      if (mouse.active) {
+        spotlight.x += (mouse.x - spotlight.x) * 0.09;
+        spotlight.y += (mouse.y - spotlight.y) * 0.09;
+
+        const spot = ctx.createRadialGradient(spotlight.x, spotlight.y, 0, spotlight.x, spotlight.y, 360);
+        spot.addColorStop(0, "rgba(139, 124, 255, 0.16)");
+        spot.addColorStop(0.5, "rgba(139, 124, 255, 0.06)");
+        spot.addColorStop(1, "rgba(139, 124, 255, 0)");
+        ctx.fillStyle = spot;
+        ctx.beginPath();
+        ctx.arc(spotlight.x, spotlight.y, 360, 0, Math.PI * 2);
+        ctx.fill();
       }
+
+      for (const n of nodes) {
+        n.x += n.vx * speedMul;
+        n.y += n.vy * speedMul;
+
+        if (mouse.active) {
+          const dx = n.x - mouse.x;
+          const dy = n.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const RADIUS = 140;
+          if (dist < RADIUS && dist > 0.01) {
+            const force = ((RADIUS - dist) / RADIUS) * 0.55;
+            n.x += (dx / dist) * force;
+            n.y += (dy / dist) * force;
+          }
+        }
+
+        if (n.x < -20) n.x = width + 20;
+        if (n.x > width + 20) n.x = -20;
+        if (n.y < -20) n.y = height + 20;
+        if (n.y > height + 20) n.y = -20;
+
+        n.r = n.baseR + Math.sin(frame * 0.03 + n.twinklePhase) * 0.5 * n.baseR;
+      }
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_DIST) {
+            const alpha = 0.07 * glowMul * (1 - dist / MAX_DIST);
+            ctx.strokeStyle = `rgba(167, 155, 255, ${Math.min(alpha, 0.16)})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+
+            if (Math.random() < 0.0009 * (1 + boost * 6)) {
+              pulses.push({ from: i, to: j, t: 0, speed: 0.012 + Math.random() * 0.012 });
+            }
+          }
+        }
+      }
+
+      if (mouse.active) {
+        for (const n of nodes) {
+          const dx = n.x - mouse.x;
+          const dy = n.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) {
+            ctx.strokeStyle = `rgba(167, 155, 255, ${0.22 * (1 - dist / 150)})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(mouse.x, mouse.y);
+            ctx.lineTo(n.x, n.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i];
+        p.t += p.speed;
+        if (p.t >= 1) {
+          pulses.splice(i, 1);
+          continue;
+        }
+        const a = nodes[p.from];
+        const b = nodes[p.to];
+        if (!a || !b) {
+          pulses.splice(i, 1);
+          continue;
+        }
+        const px = a.x + (b.x - a.x) * p.t;
+        const py = a.y + (b.y - a.y) * p.t;
+        const fade = Math.sin(p.t * Math.PI);
+        ctx.fillStyle = `rgba(255, 255, 255, ${0.6 * fade})`;
+        ctx.beginPath();
+        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(167, 155, 255, ${0.3 * fade})`;
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (const n of nodes) {
+        const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3.4);
+        glow.addColorStop(0, `rgba(139, 124, 255, ${0.14 * glowMul})`);
+        glow.addColorStop(1, "rgba(139, 124, 255, 0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * 3.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "rgba(220, 214, 255, 0.4)";
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      animationId = requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    function handleResize() {
+      width = canvas!.width = window.innerWidth;
+      height = canvas!.height = window.innerHeight;
+    }
+    function handleMouseMove(e: MouseEvent) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    }
+    function handleMouseLeave() {
+      mouse.active = false;
+    }
+    function handleActivate() {
+      boostRef.current = 1;
+    }
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener(ORB_ACTIVATE_EVENT, handleActivate);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener(ORB_ACTIVATE_EVENT, handleActivate);
     };
-    raf = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(raf);
-  }, [seenOnMount]);
-
-  function finish() {
-    window.sessionStorage.setItem(SESSION_KEY, "1");
-    setVisible(false);
-    setTimeout(() => setDone(true), 700);
-  }
-
-  if (done) return null;
-
-  const dashOffset = CIRCUMFERENCE - (progress / 100) * CIRCUMFERENCE;
+  }, []);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] bg-base flex flex-col items-center justify-center overflow-hidden"
-        >
-          <div className="absolute inset-0 grid-mesh opacity-60" />
-
-          <span className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-gold/50" />
-          <span className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-gold/50" />
-          <span className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-gold/50" />
-          <span className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-gold/50" />
-
-          <div className="relative w-[220px] h-[220px] mb-10 flex items-center justify-center">
-            <motion.svg
-              viewBox="0 0 220 220"
-              className="absolute inset-0 w-full h-full"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 18, ease: "linear", repeat: Infinity }}
-            >
-              <circle
-                cx="110"
-                cy="110"
-                r={RADIUS}
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      {/* animated scan-path line — fixed position, so it stays behind every section as you scroll */}
+      <svg
+        className="absolute inset-0 w-full h-full opacity-30"
+        viewBox="0 0 1200 800"
+        preserveAspectRatio="xMidYMid slice"
+        fill="none"
+      >
+        <motion.path
+          d="M -50 650 C 150 650 180 500 320 480 L 420 480 C 460 480 460 420 500 420 L 620 420 C 660 420 660 360 700 340 C 780 300 820 200 950 180 C 1050 165 1100 100 1250 90"
+          stroke="url(#bgPathGrad)"
+          strokeWidth="1.2"
+          strokeDasharray="4 7"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1, strokeDashoffset: [0, -22] }}
+          transition={{
+            pathLength: { duration: 2.2, ease: "easeInOut", delay: 0.2 },
+            opacity: { duration: 2.2, ease: "easeInOut", delay: 0.2 },
+            strokeDashoffset: { duration: 3, ease: "linear", repeat: Infinity, delay: 2.4 },
+          }}
+        />
+        {SCAN_NODES.map(([cx, cy], i) => {
+          const p = PALETTE[i % PALETTE.length];
+          return (
+            <g key={i}>
+              <motion.rect
+                x={cx - 6}
+                y={cy - 6}
+                width={12}
+                height={12}
                 fill="none"
-                stroke="var(--color-ivory-dim)"
-                strokeOpacity="0.35"
-                strokeWidth="1.5"
-                strokeDasharray="3 7"
-              />
-            </motion.svg>
-
-            <svg viewBox="0 0 220 220" className="absolute inset-0 w-full h-full -rotate-90">
-              <circle
-                cx="110"
-                cy="110"
-                r={RADIUS}
-                fill="none"
-                stroke="url(#loaderGrad)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray={CIRCUMFERENCE}
-                strokeDashoffset={dashOffset}
-                style={{ transition: "stroke-dashoffset 0.1s linear" }}
-              />
-              <defs>
-                <linearGradient id="loaderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#8B7CFF" />
-                  <stop offset="100%" stopColor="#FFB454" />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            <div className="relative w-[130px] h-[130px] rounded-full overflow-hidden">
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background: "radial-gradient(circle at 35% 30%, #a79bff 0%, #8b7cff 35%, #6b4fd6 60%, #0a0c12 78%)",
-                  boxShadow: "0 0 60px 6px rgba(139,124,255,0.45)",
+                stroke={p.colorTo}
+                strokeWidth="1"
+                initial={{ scale: 0, opacity: 0, rotate: 0 }}
+                animate={{ scale: 1, opacity: 1, rotate: 360 }}
+                transition={{
+                  scale: { duration: 0.5, delay: 1 + i * 0.2 },
+                  opacity: { duration: 0.5, delay: 1 + i * 0.2 },
+                  rotate: { duration: 14 + i * 3, ease: "linear", repeat: Infinity, delay: 1 + i * 0.2 },
                 }}
+                style={{ transformOrigin: `${cx}px ${cy}px` }}
               />
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                style={{ background: "radial-gradient(circle, transparent 55%, rgba(10,12,18,1) 56%)" }}
+              <motion.circle
+                cx={cx}
+                cy={cy}
+                r="2.5"
+                fill={p.color}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1, 1, 1.4, 1], opacity: [0, 1, 1, 0.4, 1] }}
+                transition={{ duration: 2.4, delay: 1 + i * 0.2, repeat: Infinity, repeatDelay: 1.5 }}
               />
-            </div>
-          </div>
+            </g>
+          );
+        })}
+        <defs>
+          <linearGradient id="bgPathGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={PALETTE[0].color} stopOpacity="0" />
+            <stop offset="35%" stopColor={PALETTE[0].colorTo} stopOpacity="0.9" />
+            <stop offset="70%" stopColor={PALETTE[1].color} stopOpacity="0.9" />
+            <stop offset="100%" stopColor={PALETTE[2].colorTo} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
 
-          <p className="font-mono text-sm tracking-[0.35em] uppercase text-ivory-dim border-y border-gold/15 py-3 px-2 mb-4">
-            System Initializing
-          </p>
-
-          <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-10 flex items-center gap-3">
-            <span>Intelligence</span>
-            <span className="w-1 h-1 rounded-full bg-gold-bright" />
-            <span>Precision</span>
-            <span className="w-1 h-1 rounded-full bg-gold-bright" />
-            <span>Engineering</span>
-          </p>
-
-          <div className="w-64 md:w-80 flex items-center gap-3">
-            <div className="flex-1 h-px bg-gold/15 relative overflow-hidden">
-              <motion.div className="absolute inset-y-0 left-0 bg-gold-bright" style={{ width: `${progress}%` }} />
-              <motion.div
-                className="absolute -top-[3px] w-2 h-2 rounded-full bg-gold-bright shadow-[0_0_8px_2px_rgba(167,155,255,0.7)]"
-                style={{ left: `calc(${progress}% - 4px)` }}
-              />
-            </div>
-            <span className="font-mono text-xs text-gold-bright tabular-nums w-10 text-right">{progress}%</span>
-          </div>
-
-          <button
-            onClick={finish}
-            className="mt-10 font-mono text-[10px] tracking-[0.25em] uppercase text-ivory-dim/60 hover:text-gold border border-gold/20 hover:border-gold/50 px-5 py-2.5 transition-colors duration-300"
-          >
-            Skip intro
-          </button>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      <canvas ref={canvasRef} className="absolute inset-0 opacity-40" />
+      {/* fade the field toward the bottom of the viewport so it never fights with body text */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base/70" />
+    </div>
   );
 }
