@@ -76,9 +76,9 @@ export default function About() {
               Claude&nbsp;API on secure, production-grade backends.
             </p>
             <p className="mt-5 text-lg md:text-xl text-ivory-dim leading-relaxed font-light">
-              I bring the same precision to the web — scalable applications
-              and responsive interfaces with Next.js and Node.js, grounded in
-              Agile practice and the full software development lifecycle.
+              I build full-stack AI applications that combine LLMs, RAG, 
+              agentic AI, and scalable web architectures into intelligent,
+               production-ready products.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-8">

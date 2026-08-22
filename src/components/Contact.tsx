@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, BookOpen } from "lucide-react";
+import { Mail, Phone, MapPin, BookOpen, Send } from "lucide-react";
+import { useState } from "react";
 
 function GithubIcon({ size = 20 }: { size?: number }) {
   return (
@@ -19,13 +20,23 @@ function LinkedinIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-const links = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/sumayya-zahid11", icon: LinkedinIcon },
-  { label: "GitHub", href: "https://github.com/syedasumayya", icon: GithubIcon },
-  { label: "Blog", href: "https://www.blogger.com/profile/16214197526729610194", icon: BookOpen },
+const socials = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/sumayya-zahid11", icon: LinkedinIcon, color: "#60a5fa" },
+  { label: "GitHub", href: "https://github.com/syedasumayya", icon: GithubIcon, color: "#a78bfa" },
+  { label: "Blog", href: "https://www.blogger.com/profile/16214197526729610194", icon: BookOpen, color: "#34d399" },
 ];
 
+const info = [
+  { label: "syedasumayya764@gmail.com", icon: Mail, color: "#f472b6", href: "mailto:syedasumayya764@gmail.com" },
+  { label: "+329-099-2077", icon: Phone, color: "#22d3ee", href: "tel:+3290992077" },
+  { label: "Islamabad, Pakistan", icon: MapPin, color: "#fb923c", href: undefined },
+];
+
+const ACCENT = "#a78bfa";
+
 export default function Contact() {
+  const [focused, setFocused] = useState<string | null>(null);
+
   return (
     <section id="contact" className="py-28 md:py-36 border-t border-gold/10">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
@@ -34,43 +45,155 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7 }}
-          className="text-center max-w-2xl mx-auto"
+          className="mb-14"
         >
           <p className="font-mono text-xs tracking-[0.3em] uppercase text-gold mb-4">06 — Get in Touch</p>
-          <h2 className="font-display text-4xl md:text-6xl text-ivory text-balance">
-            Let&apos;s build something <span className="italic text-gold-bright">intelligent</span> together.
+          <h2 className="font-display text-4xl md:text-6xl text-ivory text-balance max-w-2xl">
+            Let&apos;s build something{" "}
+            <span
+              className="italic"
+              style={{
+                backgroundImage: "linear-gradient(90deg, #a78bfa, #22d3ee)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+              }}
+            >
+              intelligent
+            </span>{" "}
+            together.
           </h2>
-          <p className="mt-6 text-ivory-dim font-light text-lg">
-            Open to opportunities in AI engineering, robotics, and full-stack development. Reach out — I&apos;d love to hear about your project.
-          </p>
-
-          <form action="https://formspree.io/f/mzdljejn" method="POST" className="mt-10 w-full max-w-lg mx-auto flex flex-col gap-4">
-            <input type="text" name="name" placeholder="Your Name" required
-              className="bg-surface border border-gold/20 text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none focus:border-gold/60 transition-colors" />
-            <input type="email" name="email" placeholder="Your Email" required
-              className="bg-surface border border-gold/20 text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none focus:border-gold/60 transition-colors" />
-            <textarea name="message" placeholder="Your Message" rows={5} required
-              className="bg-surface border border-gold/20 text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none focus:border-gold/60 transition-colors resize-none" />
-            <button type="submit" className="px-9 py-4 border border-gold text-gold text-sm tracking-[0.1em] uppercase hover:bg-gold hover:text-base transition-all duration-300">
-              Send Message
-            </button>
-          </form>
-
-          <div className="mt-14 flex flex-wrap justify-center gap-x-10 gap-y-4 text-sm text-ivory-dim">
-            <span className="inline-flex items-center gap-2"><Mail size={15} className="text-gold" />syedasumayya764@gmail.com</span>
-            <span className="inline-flex items-center gap-2"><Phone size={15} className="text-gold" />+329-099-2077</span>
-            <span className="inline-flex items-center gap-2"><MapPin size={15} className="text-gold" />Islamabad, Pakistan</span>
-          </div>
-
-          <div className="mt-10 flex justify-center gap-8">
-            {links.map((l) => (
-              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 text-ivory-dim hover:text-gold transition-colors duration-300 group">
-                <l.icon size={20} />
-                <span className="text-[11px] font-mono tracking-wide uppercase opacity-70 group-hover:opacity-100">{l.label}</span>
-              </a>
-            ))}
-          </div>
         </motion.div>
+
+        <div className="grid md:grid-cols-5 gap-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="md:col-span-2"
+          >
+            <p className="text-ivory-dim font-light text-lg leading-relaxed mb-9">
+              Open to opportunities in AI engineering, robotics, and full-stack development. Reach out — I&apos;d love to hear about your project.
+            </p>
+
+            <div className="space-y-3 mb-9">
+              {info.map((item) => {
+                const Icon = item.icon;
+                const content = (
+                  <div
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all duration-300"
+                    style={{ borderColor: "rgba(139,124,255,0.08)" }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = `${item.color}55`;
+                      e.currentTarget.style.backgroundColor = `${item.color}0d`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(139,124,255,0.08)";
+                      e.currentTarget.style.backgroundColor = "transparent";
+                    }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: `${item.color}1a`, border: `1px solid ${item.color}40` }}
+                    >
+                      <Icon size={15} style={{ color: item.color }} />
+                    </div>
+                    <span className="text-sm text-ivory-dim">{item.label}</span>
+                  </div>
+                );
+                return item.href ? (
+                  <a key={item.label} href={item.href}>
+                    {content}
+                  </a>
+                ) : (
+                  <div key={item.label}>{content}</div>
+                );
+              })}
+            </div>
+
+            <div className="flex gap-8">
+              {socials.map((l) => (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-2 text-ivory-dim transition-colors duration-300 group"
+                  onMouseEnter={(e) => (e.currentTarget.style.color = l.color)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+                >
+                  <l.icon size={20} />
+                  <span className="text-[11px] font-mono tracking-wide uppercase opacity-70 group-hover:opacity-100">{l.label}</span>
+                </a>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="md:col-span-3"
+          >
+            <form
+              action="https://formspree.io/f/mzdljejn"
+              method="POST"
+              className="scan-frame glass-panel p-7 md:p-9 flex flex-col gap-4"
+            >
+              <span className="corner-tl" />
+              <span className="corner-br" />
+
+              {(["name", "email", "message"] as const).map((field) => {
+                const isFocused = focused === field;
+                const common = {
+                  name: field,
+                  required: true,
+                  onFocus: () => setFocused(field),
+                  onBlur: () => setFocused(null),
+                  style: {
+                    borderColor: isFocused ? `${ACCENT}80` : "rgba(139,124,255,0.15)",
+                    boxShadow: isFocused ? `0 0 0 3px ${ACCENT}1a` : "none",
+                  },
+                  className:
+                    "bg-surface-2 border text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none transition-all duration-300",
+                };
+
+                if (field === "message") {
+                  return (
+                    <textarea key={field} {...common} placeholder="Your Message" rows={5} className={`${common.className} resize-none`} />
+                  );
+                }
+                return (
+                  <input
+                    key={field}
+                    {...common}
+                    type={field === "email" ? "email" : "text"}
+                    placeholder={field === "email" ? "Your Email" : "Your Name"}
+                  />
+                );
+              })}
+
+              <button
+                type="submit"
+                className="mt-2 inline-flex items-center justify-center gap-2 px-9 py-4 border text-sm tracking-[0.1em] uppercase transition-all duration-300"
+                style={{ borderColor: `${ACCENT}80`, color: ACCENT }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = `${ACCENT}15`;
+                  e.currentTarget.style.boxShadow = `0 0 28px -6px ${ACCENT}90`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                Send Message
+                <Send size={14} />
+              </button>
+            </form>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
