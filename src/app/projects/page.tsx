@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProjectsDeck from "@/components/ProjectsDeck";
+import ProjectsQuote from "@/components/ProjectsQuote";
 
 export const metadata: Metadata = {
   title: "Projects — Syeda Sumayya Zahid",
@@ -24,6 +25,7 @@ export default function ProjectsPage() {
       </section>
 
       <ProjectsDeck />
+      <ProjectsQuote />
     </main>
   );
 }

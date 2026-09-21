@@ -55,6 +55,52 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "graphcite-rag-system",
+    title: "GraphCite —",
+    titleAccent: "RAG System",
+    role: "AI Researcher & Full Stack Developer",
+    year: "2026",
+    description:
+      "Enterprise-grade Retrieval-Augmented Generation system with a Two-Stage Retrieval pipeline (vector search + cross-encoder re-ranking), conversation memory, and strict inline citations to reduce hallucinations.",
+    longDescription: [
+      "GraphCite is a RAG system built for academic and enterprise knowledge management. It synthesizes information across complex, multi-document sources and verifies every claim with an inline citation linked directly to the source text.",
+      "The retrieval pipeline is two-stage: vector search first pulls the top 10 chunks from Qdrant, then a cross-encoder re-ranker (bge-reranker-base) narrows that down to the best 3 — cutting hallucinations before the LLM (Groq's gpt-oss-120b) ever sees the context. The system is explicitly instructed to answer 'I don't know' when the retrieved context doesn't support an answer.",
+    ],
+    tags: ["LlamaIndex", "Groq", "Qdrant", "FastAPI", "Next.js"],
+    iconName: "Sparkles",
+    color: "#f472b6",
+    colorTo: "#c084fc",
+    repoUrl: "https://github.com/syedasumayya/GraphCite-RAG-System",
+    highlights: [
+      "Two-stage retrieval: vector search + cross-encoder re-ranking",
+      "Strict inline citations, linked to source text",
+      "Conversation memory for natural follow-up queries",
+    ],
+  },
+  {
+    slug: "medipredict",
+    title: "MediPredict —",
+    titleAccent: "AI Symptom Checker",
+    role: "AI/ML & Full Stack Developer",
+    year: "2026",
+    description:
+      "Production-grade full-stack AI app that analyzes natural-language symptom descriptions, predicts likely conditions, and recommends a triage level — Self-Care, Consult a Doctor, or Emergency Room.",
+    longDescription: [
+      "MediPredict takes a patient's plain-language description of their symptoms and turns it into a structured triage recommendation — Self-Care, Consult Doctor, or Emergency Room — using sentence embeddings and a trained logistic regression classifier.",
+      "The pipeline runs symptoms through a Sentence Transformer (all-MiniLM-L6-v2) to generate embeddings, classifies them, and returns a disease and urgency prediction through a FastAPI backend to a Next.js frontend. Fully Dockerized for reproducible deployment.",
+    ],
+    tags: ["Next.js", "FastAPI", "Sentence Transformers", "Scikit-Learn", "Docker"],
+    iconName: "HeartPulse",
+    color: "#34d399",
+    colorTo: "#22d3ee",
+    repoUrl: "https://github.com/syedasumayya/medipredict",
+    highlights: [
+      "NLP symptom understanding via sentence embeddings",
+      "Automated disease + triage-level prediction",
+      "Dockerized, full-stack, production-grade architecture",
+    ],
+  },
+  {
     slug: "dodo-bot-perception",
     title: "DoDo Bot —",
     titleAccent: "Perception",
@@ -123,52 +169,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "ai-learn-hub",
-    title: "AI Learn",
-    titleAccent: "Hub",
-    role: "Full Stack Developer",
-    year: "2025",
-    description:
-      "AI-powered adaptive learning platform delivering personalized education — AI-generated quizzes via the Claude API, progress tracking, and role-based access for students, instructors, and admins.",
-    longDescription: [
-      "A full-stack TypeScript e-learning platform (React + Node.js + Firebase) with AI woven directly into the learning loop — dynamic quiz generation from course content using the Claude API.",
-      "Implemented Firebase Authentication with custom JWT tokens and role-based middleware (Student/Instructor/Admin), a REST API for course CRUD, enrollment, AI quiz generation and grading with weak-topic identification, plus adaptive, performance-based recommendations and progress analytics.",
-    ],
-    tags: ["React", "Node.js", "Firebase", "Claude API", "TypeScript"],
-    iconName: "GraduationCap",
-    color: "#22d3ee",
-    colorTo: "#38bdf8",
-    repoUrl: "https://github.com/syedasumayya/ai-learning-platform",
-    highlights: [
-      "Claude API-powered dynamic quiz generation",
-      "Role-based auth: Student / Instructor / Admin",
-      "Adaptive, performance-based learning recommendations",
-    ],
-  },
-  {
-    slug: "al-rehman-welfare",
-    title: "Al Rehman",
-    titleAccent: "Welfare",
-    role: "Full Stack Developer",
-    year: "2024",
-    description:
-      "A full-stack platform for a youth-led NGO supporting orphans, widows, and families in need — donation tracking, volunteer coordination, and event management with an admin dashboard.",
-    longDescription: [
-      "A full-stack platform built for Al Rehman Welfare, a youth-led NGO in Pakistan, to manage donations, volunteers, and events in one place — replacing manual, spreadsheet-based tracking.",
-      "Built an admin dashboard giving staff visibility into activity across the platform and the ability to generate operational reports, alongside donor- and volunteer-facing interfaces.",
-    ],
-    tags: ["Next.js", "TypeScript", "Database Integration", "Admin Dashboard"],
-    iconName: "HandHeart",
-    color: "#34d399",
-    colorTo: "#2dd4bf",
-    repoUrl: "https://github.com/syedasumayya/alrehman-welfare",
-    highlights: [
-      "Donation tracking system",
-      "Volunteer & event coordination",
-      "Admin dashboard with reporting",
-    ],
-  },
-  {
     slug: "arbotrix-website",
     title: "Arbotrix",
     titleAccent: "Website",
@@ -234,50 +234,7 @@ export const projects: Project[] = [
       "Real-time alert generation",
     ],
   },
-  {
-    slug: "emotion-detection",
-    title: "Emotion Detection —",
-    titleAccent: "EffectNet",
-    role: "AI & Model Trainer",
-    year: "2025",
-    description:
-      "Trained emotion recognition models on facial expression data using computer vision and augmentation techniques, evaluating and optimizing for accuracy.",
-    longDescription: [
-      "A computer vision project focused on classifying facial expressions into emotion categories using the EffectNet dataset.",
-      "Applied data augmentation techniques to improve generalization, then iterated through evaluation cycles to optimize model accuracy across varied lighting and pose conditions.",
-    ],
-    tags: ["Computer Vision", "TensorFlow", "Model Training"],
-    iconName: "ScanFace",
-    color: "#c084fc",
-    colorTo: "#f472b6",
-    highlights: [
-      "Facial expression classification",
-      "Data augmentation for generalization",
-      "Iterative accuracy optimization",
-    ],
-  },
-  {
-    slug: "rs-beauty-salon",
-    title: "RS Beauty",
-    titleAccent: "Salon",
-    role: "Full Stack Developer",
-    year: "2024",
-    description:
-      "A responsive beauty salon management website with service browsing, appointment booking, and an admin panel for managing services, inquiries, and business information.",
-    longDescription: [
-      "A responsive beauty salon management website built with Next.js, React, Tailwind CSS, and Node.js, giving customers an easy way to explore services and schedule appointments online.",
-      "Includes an admin panel for managing salon services, customer inquiries, appointments, and business information, backed by secure APIs and persistent data storage.",
-    ],
-    tags: ["Next.js", "React", "Tailwind CSS", "Node.js"],
-    iconName: "Sparkles",
-    color: "#fb923c",
-    colorTo: "#f472b6",
-    highlights: [
-      "Service browsing & appointment booking",
-      "Admin panel for salon operations",
-      "Secure backend APIs & data persistence",
-    ],
-  },
+  
 ];
 
 export function getProjectBySlug(slug: string) {
