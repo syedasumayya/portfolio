@@ -9,9 +9,21 @@ import ProjectVisual from "./ProjectVisual";
 
 export default function ProjectsDeck() {
   const [index, setIndex] = useState(0);
+  const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
   const total = projects.length;
+  const isLast = index === total - 1;
 
-  const next = () => setIndex((i) => (i + 1) % total);
+  function scrollToQuote() {
+    document.getElementById("projects-quote")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  const next = () => {
+    if (isLast) {
+      scrollToQuote();
+      return;
+    }
+    setIndex((i) => (i + 1) % total);
+  };
   const prev = () => setIndex((i) => (i - 1 + total) % total);
 
   const active = projects[index];
@@ -20,9 +32,17 @@ export default function ProjectsDeck() {
 
   const peekOffsets = [1, 2].map((offset) => projects[(index + offset) % total]);
 
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setSpotlight({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  }
+
   return (
-    <div className="max-w-6xl mx-auto px-6 md:px-10 pb-28">
-      <div className="relative h-[560px] md:h-[600px]">
+    <div className="max-w-7.5xl mx-auto px-6 md:px-10 pb-24">
+      <div className="relative h-[520px] md:h-[600px]">
         {peekOffsets
           .slice()
           .reverse()
@@ -54,10 +74,12 @@ export default function ProjectsDeck() {
             initial={{ y: 40, opacity: 0, scale: 0.97 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: -30, opacity: 0, scale: 0.98 }}
+            whileHover={{ scale: 1.008 }}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             onClick={next}
+            onMouseMove={handleMouseMove}
             role="button"
-            aria-label="Show next project"
+            aria-label={isLast ? "See more below" : "Show next project"}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") next();
@@ -65,6 +87,14 @@ export default function ProjectsDeck() {
             className="absolute inset-0 rounded-2xl overflow-hidden glass-panel cursor-pointer"
             style={{ zIndex: 20, borderColor: `${active.color}40` }}
           >
+            {/* cursor-reactive spotlight, active-project colored */}
+            <div
+              className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+              style={{
+                background: `radial-gradient(circle 380px at ${spotlight.x}% ${spotlight.y}%, ${active.color}14, transparent 70%)`,
+              }}
+            />
+
             <div className="grid md:grid-cols-2 h-full">
               <div className="relative h-full min-h-[220px]">
                 <ProjectVisual project={active} />
@@ -112,20 +142,27 @@ export default function ProjectsDeck() {
                     ))}
                   </div>
 
-                  <Link
-                    href={ctaHref}
-                    target={isExternal ? "_blank" : undefined}
-                    rel={isExternal ? "noopener noreferrer" : undefined}
-                    onClick={(e) => e.stopPropagation()}
-                    className="relative z-10 inline-flex items-center gap-2 font-mono text-xs tracking-[0.15em] uppercase text-ivory border rounded-full px-5 py-2.5 hover:opacity-80 transition-opacity duration-300 group"
-                    style={{ borderColor: `${active.color}40` }}
-                  >
-                    View Project
-                    <ArrowUpRight
-                      size={13}
-                      className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
-                  </Link>
+                  <div className="flex items-center gap-4">
+                    <Link
+                      href={ctaHref}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                      onClick={(e) => e.stopPropagation()}
+                      className="relative z-10 inline-flex items-center gap-2 font-mono text-xs tracking-[0.15em] uppercase text-ivory border rounded-full px-5 py-2.5 hover:opacity-80 transition-opacity duration-300 group"
+                      style={{ borderColor: `${active.color}40` }}
+                    >
+                      View Project
+                      <ArrowUpRight
+                        size={13}
+                        className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </Link>
+                    {isLast && (
+                      <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-ivory-dim/40">
+                        Click for more ↓
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -163,7 +200,7 @@ export default function ProjectsDeck() {
           </button>
           <button
             onClick={next}
-            aria-label="Next project"
+            aria-label={isLast ? "See more below" : "Next project"}
             className="w-10 h-10 rounded-full border border-gold/20 flex items-center justify-center text-ivory-dim hover:text-ivory hover:border-gold/50 transition-colors duration-300"
           >
             <ArrowRight size={16} />

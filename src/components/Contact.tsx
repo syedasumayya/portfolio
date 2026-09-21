@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, BookOpen, Send } from "lucide-react";
-import { useState } from "react";
+import { Mail, Eye, ArrowUpRight } from "lucide-react";
 
 function GithubIcon({ size = 20 }: { size?: number }) {
   return (
@@ -20,22 +20,60 @@ function LinkedinIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-const socials = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/sumayya-zahid11", icon: LinkedinIcon, color: "#60a5fa" },
-  { label: "GitHub", href: "https://github.com/syedasumayya", icon: GithubIcon, color: "#a78bfa" },
-  { label: "Blog", href: "https://www.blogger.com/profile/16214197526729610194", icon: BookOpen, color: "#34d399" },
+const infoCards = [
+  {
+    label: "EMAIL",
+    value: "syedasumayya764@gmail.com",
+    href: "mailto:syedasumayya764@gmail.com",
+    icon: Mail,
+    color: "#a78bfa",
+  },
+  {
+    label: "LINKEDIN",
+    value: "linkedin.com/in/sumayya-zahid11",
+    href: "https://www.linkedin.com/in/sumayya-zahid11",
+    icon: LinkedinIcon,
+    color: "#60a5fa",
+  },
+  {
+    label: "GITHUB",
+    value: "github.com/syedasumayya",
+    href: "https://github.com/syedasumayya",
+    icon: GithubIcon,
+    color: "#f472b6",
+  },
 ];
 
-const info = [
-  { label: "syedasumayya764@gmail.com", icon: Mail, color: "#f472b6", href: "mailto:syedasumayya764@gmail.com" },
-  { label: "+329-099-2077", icon: Phone, color: "#22d3ee", href: "tel:+3290992077" },
-  { label: "Islamabad, Pakistan", icon: MapPin, color: "#fb923c", href: undefined },
-];
-
-const ACCENT = "#a78bfa";
+const VISIT_KEY = "portfolio_visits";
 
 export default function Contact() {
-  const [focused, setFocused] = useState<string | null>(null);
+  const [visits, setVisits] = useState<number | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const counted = useRef(false);
+
+  useEffect(() => {
+  if (counted.current) return;
+  counted.current = true;
+  try {
+    const current = parseInt(localStorage.getItem(VISIT_KEY) || "0", 10);
+    const next = current + 1;
+    localStorage.setItem(VISIT_KEY, String(next));
+    queueMicrotask(() => setVisits(next));
+  } catch {
+    queueMicrotask(() => setVisits(1));
+  }
+}, []);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const subject = encodeURIComponent(`Portfolio contact from ${name || "your site"}`);
+    const body = encodeURIComponent(
+      `${message}\n\n— ${name}${email ? ` (${email})` : ""}`
+    );
+    window.location.href = `mailto:syedasumayya764@gmail.com?subject=${subject}&body=${body}`;
+  }
 
   return (
     <section id="contact" className="py-28 md:py-36 border-t border-gold/10">
@@ -47,11 +85,12 @@ export default function Contact() {
           transition={{ duration: 0.7 }}
           className="mb-14"
         >
-          <p className="font-mono text-xs tracking-[0.3em] uppercase text-gold mb-4">06 — Get in Touch</p>
-          <h2 className="font-display text-4xl md:text-6xl text-ivory text-balance max-w-2xl">
-            Let&apos;s build something{" "}
+          <p className="font-mono text-xs tracking-[0.3em] uppercase text-gold mb-4">
+            07 — Contact
+          </p>
+          <h2 className="font-display text-4xl md:text-6xl text-ivory text-balance">
+            Let&apos;s{" "}
             <span
-              className="italic"
               style={{
                 backgroundImage: "linear-gradient(90deg, #a78bfa, #22d3ee)",
                 WebkitBackgroundClip: "text",
@@ -59,77 +98,69 @@ export default function Contact() {
                 color: "transparent",
               }}
             >
-              intelligent
-            </span>{" "}
-            together.
+              connect
+            </span>
           </h2>
+          <p className="mt-5 text-ivory-dim/70 text-lg max-w-xl">
+            Have an opportunity, project idea or simply want to say hello?
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-5 gap-12">
+        <div className="grid md:grid-cols-5 gap-8">
+          {/* left: info cards + visit counter */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="md:col-span-2"
+            className="md:col-span-2 space-y-4"
           >
-            <p className="text-ivory-dim font-light text-lg leading-relaxed mb-9">
-              Open to opportunities in AI engineering, robotics, and full-stack development. Reach out — I&apos;d love to hear about your project.
-            </p>
-
-            <div className="space-y-3 mb-9">
-              {info.map((item) => {
-                const Icon = item.icon;
-                const content = (
-                  <div
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all duration-300"
-                    style={{ borderColor: "rgba(139,124,255,0.08)" }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = `${item.color}55`;
-                      e.currentTarget.style.backgroundColor = `${item.color}0d`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(139,124,255,0.08)";
-                      e.currentTarget.style.backgroundColor = "transparent";
-                    }}
-                  >
-                    <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: `${item.color}1a`, border: `1px solid ${item.color}40` }}
-                    >
-                      <Icon size={15} style={{ color: item.color }} />
-                    </div>
-                    <span className="text-sm text-ivory-dim">{item.label}</span>
-                  </div>
-                );
-                return item.href ? (
-                  <a key={item.label} href={item.href}>
-                    {content}
-                  </a>
-                ) : (
-                  <div key={item.label}>{content}</div>
-                );
-              })}
-            </div>
-
-            <div className="flex gap-8">
-              {socials.map((l) => (
+            {infoCards.map((c) => {
+              const Icon = c.icon;
+              return (
                 <a
-                  key={l.label}
-                  href={l.href}
-                  target="_blank"
+                  key={c.label}
+                  href={c.href}
+                  target={c.href.startsWith("mailto:") ? undefined : "_blank"}
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-2 text-ivory-dim transition-colors duration-300 group"
-                  onMouseEnter={(e) => (e.currentTarget.style.color = l.color)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+                  className="scan-frame glass-panel flex items-center gap-4 p-5 transition-all duration-300"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `${c.color}55`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "";
+                  }}
                 >
-                  <l.icon size={20} />
-                  <span className="text-[11px] font-mono tracking-wide uppercase opacity-70 group-hover:opacity-100">{l.label}</span>
+                  <span className="corner-tl" />
+                  <span className="corner-br" />
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: `${c.color}1a`, border: `1px solid ${c.color}40` }}
+                  >
+                    <Icon size={17} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-mono text-[10px] tracking-[0.2em]" style={{ color: c.color }}>
+                      {c.label}
+                    </p>
+                    <p className="text-sm text-ivory truncate">{c.value}</p>
+                  </div>
                 </a>
-              ))}
+              );
+            })}
+
+            <div className="border border-dashed border-gold/15 rounded-lg p-5 flex items-center gap-4">
+              <div className="flex items-center justify-center w-10 h-10 shrink-0">
+                <Eye size={22} className="text-ivory-dim/50" />
+              </div>
+              <div>
+                <p className="font-display text-2xl text-ivory">{visits ?? "—"}</p>
+                <p className="text-xs text-ivory-dim/50">Portfolio visits on this browser</p>
+              </div>
             </div>
           </motion.div>
 
+          {/* right: form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -137,60 +168,59 @@ export default function Contact() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="md:col-span-3"
           >
-            <form
-              action="https://formspree.io/f/mzdljejn"
-              method="POST"
-              className="scan-frame glass-panel p-7 md:p-9 flex flex-col gap-4"
-            >
+            <form onSubmit={handleSubmit} className="scan-frame glass-panel p-7 md:p-8 space-y-5">
               <span className="corner-tl" />
               <span className="corner-br" />
 
-              {(["name", "email", "message"] as const).map((field) => {
-                const isFocused = focused === field;
-                const common = {
-                  name: field,
-                  required: true,
-                  onFocus: () => setFocused(field),
-                  onBlur: () => setFocused(null),
-                  style: {
-                    borderColor: isFocused ? `${ACCENT}80` : "rgba(139,124,255,0.15)",
-                    boxShadow: isFocused ? `0 0 0 3px ${ACCENT}1a` : "none",
-                  },
-                  className:
-                    "bg-surface-2 border text-ivory placeholder:text-ivory-dim/40 px-5 py-3 text-sm focus:outline-none transition-all duration-300",
-                };
-
-                if (field === "message") {
-                  return (
-                    <textarea key={field} {...common} placeholder="Your Message" rows={5} className={`${common.className} resize-none`} />
-                  );
-                }
-                return (
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm text-ivory-dim mb-2">Name</label>
                   <input
-                    key={field}
-                    {...common}
-                    type={field === "email" ? "email" : "text"}
-                    placeholder={field === "email" ? "Your Email" : "Your Name"}
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your name"
+                    className="w-full bg-surface-2 border border-gold/15 text-ivory placeholder:text-ivory-dim/40 px-4 py-3 text-sm rounded-md focus:outline-none focus:border-[#a78bfa]/60 transition-colors"
                   />
-                );
-              })}
+                </div>
+                <div>
+                  <label className="block text-sm text-ivory-dim mb-2">Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="w-full bg-surface-2 border border-gold/15 text-ivory placeholder:text-ivory-dim/40 px-4 py-3 text-sm rounded-md focus:outline-none focus:border-[#a78bfa]/60 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm text-ivory-dim mb-2">Message</label>
+                <textarea
+                  required
+                  rows={6}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Tell me about your opportunity or idea..."
+                  className="w-full bg-surface-2 border border-gold/15 text-ivory placeholder:text-ivory-dim/40 px-4 py-3 text-sm rounded-md focus:outline-none focus:border-[#a78bfa]/60 transition-colors resize-none"
+                />
+              </div>
 
               <button
                 type="submit"
-                className="mt-2 inline-flex items-center justify-center gap-2 px-9 py-4 border text-sm tracking-[0.1em] uppercase transition-all duration-300"
-                style={{ borderColor: `${ACCENT}80`, color: ACCENT }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = `${ACCENT}15`;
-                  e.currentTarget.style.boxShadow = `0 0 28px -6px ${ACCENT}90`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg text-sm font-medium transition-transform duration-300 hover:scale-[1.02]"
+                style={{ background: "linear-gradient(90deg, #a78bfa, #22d3ee)", color: "#0a0c12" }}
               >
                 Send Message
-                <Send size={14} />
+                <ArrowUpRight size={15} />
               </button>
+
+              <p className="text-xs text-ivory-dim/40">
+                This opens your email application with the message prepared.
+              </p>
             </form>
           </motion.div>
         </div>
