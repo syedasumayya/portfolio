@@ -4,6 +4,7 @@ import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import GitHubRepos from "@/components/GitHubRepos";
+import HowIWork from "@/components/HowIWork";
 import Education from "@/components/Education";
 import ResumeCTA from "@/components/ResumeCTA";
 import Contact from "@/components/Contact";
@@ -17,6 +18,7 @@ export default function Home() {
       <Projects limit={4} />
       <Skills />
       <GitHubRepos />
+      <HowIWork />
       <Education />
       <ResumeCTA />
       <Contact />

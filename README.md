@@ -1,71 +1,68 @@
 # Syeda Sumayya Zahid — Portfolio
 
-Personal portfolio website of Syeda Sumayya Zahid, Software Engineer specializing in AI, Robotics, and Full-Stack Web Development.
+A personal portfolio for **Syeda Sumayya Zahid**, a Software Engineer specializing in **AI, Robotics, and Full-Stack Web Development**.
 
-Live at [sumayya-portfolio.vercel.app](https://sumayya-portfolio.vercel.app)
+**Live:** [sumayya-portfolio.vercel.app](https://sumayya-portfolio.vercel.app)
 
 ---
+
+## About
+
+This site showcases work spanning machine learning and computer vision, ROS 2 robotics software, LLM-powered applications, and production full-stack engineering — from a flagship enterprise platform (GridCore360) to a restaurant-service robot's perception stack, an enterprise RAG system, and a medical AI symptom checker.
 
 ## Tech Stack
 
-- [Next.js 16](https://nextjs.org) — App Router, server-side rendering
-- [Tailwind CSS v4](https://tailwindcss.com) — utility-first styling
-- [Framer Motion](https://www.framer.com/motion/) — animations
-- [TypeScript](https://www.typescriptlang.org) — type safety
-
----
+- **[Next.js 16](https://nextjs.org)** — App Router, Turbopack, server-side rendering
+- **[Tailwind CSS v4](https://tailwindcss.com)** — utility-first styling, custom design tokens
+- **[Framer Motion](https://www.framer.com/motion/)** — scroll reveals, hover interactions, page transitions
+- **[TypeScript](https://www.typescriptlang.org)** — type safety throughout
+- **[Lucide React](https://lucide.dev)** — icon system
 
 ## Features
 
-- Cinematic hero with CV-scan animation and typewriter name reveal
-- Computer-vision particle background (canvas animation)
-- Alternating project showcase with real screenshots
-- Animated experience timeline
-- Skills grouped by category with gold pill tags
-- Education cards with activities and achievements
-- Downloadable resume
-- Fully responsive — mobile, tablet, desktop
-
----
+- Cinematic hero with a typewriter name reveal, scroll-aware animated background, and an interactive orbiting constellation
+- Live GitHub repository feed, fetched client-side from the public GitHub API
+- Click-through project deck with animated transitions, color-coded by category
+- Skills grid with per-category accent colors and animated proficiency bars
+- Animated, expandable experience timeline
+- "How I Work" process section outlining the engineering approach end-to-end
+- Fully responsive — mobile, tablet, and desktop
+- One cohesive color system (violet, pink, blue, green, amber) applied consistently across every section
 
 ## Sections
 
-| Section | Description |
-|---|---|
-| Hero | Name reveal + scan animation |
-| About | Bio, profile photo, focus areas |
-| Experience | Arbotrix, TechKnock.tech, Firnas.tech |
-| Projects | 6 projects with screenshots |
-| Skills | AI/ML, Computer Vision, Robotics, Web, QA |
-| Education | COMSATS + Islamia College with achievements |
-| Contact | Email, LinkedIn, GitHub, Blog |
+| Section       | Description                                                   |
+| ------------- | --------------------------------------------------------------- |
+| Hero          | Name reveal, animated background, interactive orbit             |
+| About         | Bio, focus areas, quick-impact stats                             |
+| Experience    | Arbotrix, TechKnock.tech, Firnas.tech — expandable timeline       |
+| Projects      | 13 projects — AI/ML, robotics, RAG, and full-stack builds        |
+| Skills        | Categorized skills with animated proficiency bars                |
+| How I Work    | The engineering process, from problem to production              |
+| Education     | COMSATS + Islamia College, with activities and achievements      |
+| GitHub        | Live feed of public repositories                                 |
+| Resume        | Preview and download                                             |
+| Contact       | Direct contact info, social links, and a working message form    |
 
----
-
-## Local Development
+## Getting Started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
-
----
+Open [http://localhost:3000](http://localhost:3000) to view it locally.
 
 ## Deployment
 
-Deployed on [Vercel](https://vercel.com). Every push to `master` triggers an automatic redeploy.
-
----
+Deployed on [Vercel](https://vercel.com). Every push to `master` triggers an automatic production redeploy.
 
 ## Contact
 
-- Email: syedasumayya764@gmail.com
-- LinkedIn: [linkedin.com/in/sumayya-zahid11](https://www.linkedin.com/in/sumayya-zahid11)
-- GitHub: [github.com/syedasumayya](https://github.com/syedasumayya)
-- Blog: [Blogger Profile](https://www.blogger.com/profile/16214197526729610194)
-
+- **Email:** [syedasumayya764@gmail.com](mailto:syedasumayya764@gmail.com)
+- **LinkedIn:** [linkedin.com/in/sumayya-zahid11](https://www.linkedin.com/in/sumayya-zahid11)
+- **GitHub:** [github.com/syedasumayya](https://github.com/syedasumayya)
+- **Blog:** [Blogger Profile](https://www.blogger.com/profile/16214197526729610194)
 
 ---
 
