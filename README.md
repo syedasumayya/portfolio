@@ -2,7 +2,7 @@
 
 A personal portfolio site for showcasing my work across AI, computer vision, robotics, and full-stack development — built as a dark, glassy, tech-themed single-page-feel app with animated backgrounds, an interactive hero, and real project data pulled from my own GitHub.
 
-**Live site:** [your-vercel-url-here](https://your-vercel-url-here.vercel.app)
+**Live site:** https://sumayya-portfolio.vercel.app/
 
 ---
 
