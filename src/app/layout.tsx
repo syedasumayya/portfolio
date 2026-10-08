@@ -25,8 +25,32 @@ const jbmono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Syeda Sumayya Zahid — Software Engineer & AI/Robotics Specialist",
-  description: "Portfolio of Syeda Sumayya Zahid — Software Engineer specializing in AI, robotics (ROS 2), and full-stack web development with Next.js, Node.js, and Tailwind CSS.",
+  title: "Syeda Sumayya Zahid — AI Engineer & Full-Stack Developer",
+  description:
+    "Portfolio of Syeda Sumayya Zahid — Software Engineer building AI, computer vision, robotics (ROS 2), and full-stack systems.",
+  metadataBase: new URL("https://sumayya-portfolio.vercel.app"),
+  openGraph: {
+    title: "Syeda Sumayya Zahid — AI Engineer & Full-Stack Developer",
+    description:
+      "Portfolio of Syeda Sumayya Zahid — Software Engineer building AI, computer vision, robotics (ROS 2), and full-stack systems.",
+    url: "https://sumayya-portfolio.vercel.app",
+    siteName: "Syeda Sumayya Zahid — Portfolio",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Syeda Sumayya Zahid — AI Engineer & Full-Stack Developer",
+    description:
+      "Portfolio of Syeda Sumayya Zahid — Software Engineer building AI, computer vision, robotics (ROS 2), and full-stack systems.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
