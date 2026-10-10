@@ -35,13 +35,6 @@ export const metadata: Metadata = {
       "Portfolio of Syeda Sumayya Zahid — Software Engineer building AI, computer vision, robotics (ROS 2), and full-stack systems.",
     url: "https://sumayya-portfolio.vercel.app",
     siteName: "Syeda Sumayya Zahid — Portfolio",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-      },
-    ],
     type: "website",
   },
   twitter: {
@@ -49,7 +42,7 @@ export const metadata: Metadata = {
     title: "Syeda Sumayya Zahid — AI Engineer & Full-Stack Developer",
     description:
       "Portfolio of Syeda Sumayya Zahid — Software Engineer building AI, computer vision, robotics (ROS 2), and full-stack systems.",
-    images: ["/og-image.png"],
+    
   },
 };
 

@@ -19,6 +19,13 @@ function LinkedinIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+function HuggingFaceIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12 2.25c-5.52 0-10 3.9-10 8.72 0 1.73.58 3.34 1.57 4.7-.1.5-.4 1.73-.76 2.9-.08.27.17.52.44.44 1.2-.36 2.5-.8 3-1 1.43.6 3.03.93 4.75.93 5.52 0 10-3.9 10-8.72s-4.48-8.97-10-8.97Zm-4.2 7.1a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm8.4 0a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 17.1c-1.8 0-3.36-.8-4.1-2a.45.45 0 0 1 .5-.67c1.1.44 2.3.67 3.6.67s2.5-.23 3.6-.67a.45.45 0 0 1 .5.67c-.74 1.2-2.3 2-4.1 2Z" />
+    </svg>
+  );
+}
 
 const FOCUS_AREAS = [
   { icon: Brain, label: "AI & Machine Learning", color: "#a78bfa" },
@@ -36,6 +43,7 @@ const STATS = [
 const SOCIALS = [
   { icon: GithubIcon, href: "https://github.com/syedasumayya", label: "GitHub", color: "#a78bfa" },
   { icon: LinkedinIcon, href: "https://linkedin.com/in/syedasumayya", label: "LinkedIn", color: "#60a5fa" },
+  { icon: HuggingFaceIcon, href: "https://huggingface.co/syedasumayya1", label: "Hugging Face", color: "#fb923c" },
   { icon: Mail, href: "mailto:zahidsumayya266@gmail.com", label: "Email", color: "#f472b6" },
 ];
 
